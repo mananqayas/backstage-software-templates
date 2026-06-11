@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: python-app
+  name: python-template
   title: Python flask template
   description: Provisions a minimalistic flask application
 spec:
@@ -20,13 +20,13 @@ spec:
           description: Provide a component (microservice) name
           pattern: '^([a-zA-Z][a-zA-Z0-9]*)(-[a-zA-Z0-9]+)*$'
         environment:
-          title: environment
+          title: Environment
           type: string
-          description: The environment where this component will be deployed in
+          description: The environment where this component will be deployed
           enum:
             - dev
-            - staging
-            - prod  
+            - prod
+
   steps:
     - id: fetch-base
       name: Fetch Base
@@ -34,8 +34,9 @@ spec:
       input:
         url: ./template
         values:
-          app_name: ${{ parameters.component_id }}
-          app_env: ${{ parameters.environment }}
+          app_name: ${{parameters.component_id}}
+          app_env: ${{parameters.environment}}
+
     - id: publish
       name: Publish
       action: publish:github
@@ -43,15 +44,18 @@ spec:
         allowedHosts:
           - github.com
         description: This is ${{ parameters.component_id }}
-        repoUrl: github.com?owner=mananqayas&repo=${{ parameters.component_id }}
+        repoUrl: github.com?owner=mananqayas&repo=${{parameters.component_id}}
         protectDefaultBranch: false
+        repoVisibility: public
+
     - id: register
       name: Register
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: "/catalog-info.yaml"
+
   output:
     links:
-      - title: Repository 
-        url: ${{ steps['publish'].output.remoteUrl }}     
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
