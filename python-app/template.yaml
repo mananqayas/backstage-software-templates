@@ -27,3 +27,11 @@ spec:
             - dev
             - staging
             - prod  
+  steps:
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./template
+        values:
+          component_id: ${{ parameters.component_id }}
