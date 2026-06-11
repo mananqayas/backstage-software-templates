@@ -41,7 +41,7 @@ spec:
       action: publish:github
       input:
         allowedHosts:
-          - githhub.com
+          - github.com
         description: This is ${{ parameters.component_id }}
         repoUrl: github.com?owner=mananqayas&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
